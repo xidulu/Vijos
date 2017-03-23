@@ -1,0 +1,62 @@
+/*
+Write a function to sort a stack in ascending order.
+You should not make any assumptions about how
+the stack is implemented.
+The following are the only functions that should be
+used to write this function: push | pop | top | empty.
+
+
+void StackSort(stack<int>& s);
+PostCondition: sorted stack with minimum on the top.
+
+*/
+
+#include <iostream>
+#include <stack>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+void StackSort(stack<int>& s)
+{
+    stack<int> temp;
+    //A stack where the top element is bigger than any elements below
+    while(!s.empty()){
+        int t;
+        //to storage the top element of S
+        t=s.top();
+        s.pop();
+        if (temp.empty()) {temp.push(t);continue;}
+        //If temp is empty, there is no need for any comparison
+        while(true){
+            if (temp.empty()) {temp.push(t);break;}
+            if (temp.top()<=t){temp.push(t);break;}
+            if (temp.top()>t) {
+                int t2;
+                t2=temp.top();
+                temp.pop();
+                s.push(t2);
+            }//move elements of temp to S until temp's top is smaller than S's top element
+        }
+
+    }
+    while(!temp.empty()){
+        s.push(temp.top());
+        temp.pop();
+    }
+    //Since temp is a descend stack, we can reverse it by pushing its elements to S
+}
+
+void display(stack<int> s)
+{ while (!s.empty()) cout<<s.top()<<endl,s.pop();
+  cout<<endl;
+}
+int main(int argc,char**argv)
+{ const int n{20};
+  srand((unsigned)time(0));
+  stack<int> s;
+  for (int i{0};i<n;i++) s.push(rand()%100);
+  cout<<"Before sorting:"<<endl<<endl;  display(s);
+  cout<<"After sorting:"<<endl; StackSort(s); display(s);
+  return 0;
+}
